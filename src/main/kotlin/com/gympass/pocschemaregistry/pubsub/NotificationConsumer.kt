@@ -1,10 +1,13 @@
 package com.gympass.pocschemaregistry.pubsub
 
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import com.gympass.pocschemaregistry.pubsub.representations.PocEvent
 import com.gympass.pocschemaregistry.services.PocService
 import com.gympass.pocschemaregistry.shared.annotations.WorkerMode
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
+
+import io.confluent.developer.User;
 
 @WorkerMode
 class NotificationConsumer(
@@ -16,9 +19,10 @@ class NotificationConsumer(
     beanRef = "self",
     topics = ["#{self.topics.pocCreated}"]
   )
-  fun consumePocCreated(message: String) {
-    logger.info("Message received on topic ${topics.pocCreated}. Message = $message")
-    val event = stringToObject<PocEvent>(message)
-    notificationService.processEvent(event)
+  fun consumePocCreated(record: ConsumerRecord<String, User>) {
+    logger.info("Message received on topic ${topics.pocCreated}. Message = ${record.value()}")
+//    val event = stringToObject<PocEvent>(message)
+    println("====================")
+//    notificationService.processEvent(event)
   }
 }

@@ -6,8 +6,10 @@ import com.gympass.pocschemaregistry.shared.annotations.ApiMode
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
+import io.confluent.developer.User
+
 @ApiMode
-@RequestMapping("/poc/{str}")
+@RequestMapping("/poc/{name}/{age}")
 class PocControllerImpl(
   private val blockedDomainService: PocService
 ) {
@@ -16,7 +18,7 @@ class PocControllerImpl(
   @GetMapping
   fun getPoc(
     @PathVariable str: String
-  ): PocEvent {
-    return blockedDomainService.emitEvent(str)
+  ): String {
+    return blockedDomainService.emitEvent(User(name, age))
   }
 }
