@@ -33,16 +33,16 @@ services:
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
 
-  schema-registry:
+  schemaregistrygustavo:
     image: confluentinc/cp-schema-registry:6.1.1
-    hostname: schema-registry
-    container_name: schema-registry
+    hostname: schemaregistrygustavo
+    container_name: schemaregistrygustavo
     depends_on:
       - broker
     ports:
       - "8081:8081"
     environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_HOST_NAME: schemaregistrygustavo
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
@@ -55,5 +55,6 @@ services:
     environment:
       KAFKA_BROKERCONNECT: "broker:29092"
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+      SCHEMAREGISTRY_CONNECT: 'schemaregistrygustavo:8081'
     depends_on:
       - broker
