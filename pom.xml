@@ -19,19 +19,22 @@
 	</properties>
 	<repositories>
 		<repository>
-			<id>gympass</id>
-			<url>https://registry.us.gympass.cloud/repository/maven-public/</url>
-		</repository>
-		<repository>
 			<id>confluent</id>
 			<url>https://packages.confluent.io/maven/</url>
 		</repository>
 	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-kotlin</artifactId>
@@ -44,15 +47,6 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.gympass.kotlinspringsdk</groupId>
-			<artifactId>spring-kafka</artifactId>
-			<version>0.2.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>io.confluent</groupId>
@@ -62,7 +56,7 @@
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>1.8.2</version>
+			<version>1.9.2</version>
 		</dependency>
 		<dependency>
 			<groupId>io.confluent</groupId>
@@ -81,16 +75,20 @@
 			</exclusions>
 		</dependency>
 
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>0.15</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.25</version>
 		</dependency>
 	</dependencies>
 
@@ -125,7 +123,7 @@
 			<plugin>
 				<groupId>org.apache.avro</groupId>
 				<artifactId>avro-maven-plugin</artifactId>
-				<version>1.8.2</version>
+				<version>1.9.2</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -133,13 +131,19 @@
 							<goal>schema</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>src/main/resources/avro</sourceDirectory>
-
-							<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-							<stringType>String</stringType>
+							<sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+							<outputDirectory>${project.basedir}/src/main/kotlin/</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.9</source>
+					<target>1.9</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
